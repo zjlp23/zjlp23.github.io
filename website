@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lymphatic Port-a-Cath Project: Research Synthesis</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        /* Custom Styles & Chart Containers */
+        body { font-family: 'Inter', sans-serif; scroll-behavior: smooth; }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 350px;
+            max-height: 400px;
+        }
+        @media (max-width: 768px) {
+            .chart-container { height: 250px; }
+        }
+        .nav-link { transition: all 0.3s ease; }
+        .nav-link:hover { color: #0f766e; background-color: #f0fdfa; border-radius: 0.375rem; }
+        .glass-card { background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(10px); border: 1px solid rgba(204, 253, 246, 0.5); }
+        .tab-btn.active { border-bottom: 2px solid #0d9488; color: #0f766e; font-weight: 600; }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800">
+
+<!-- Chosen Palette: Clinical Teal & Slate (Teal for lymphatic fluid context, slate/gray for clinical precision, white for clean data presentation) -->
+<!-- Application Structure Plan: 
+    1. Header/Nav: Sticky navigation for easy jumping between complex clinical topics.
+    2. Executive Summary / Port-a-Cath Focus: Puts the user's project front and center immediately.
+    3. Anatomy & Physiology (Thoracic Duct): Establishes baseline normal parameters.
+    4. Pathophysiology (CHF Connection): Explains the mechanical failure leading to the need for intervention.
+    5. Rheology & Fluid Dynamics (Viscosity): Crucial engineering constraints for catheter/port design.
+    6. Current Treatments: Analyzes competitors/alternatives to a novel port-a-cath.
+    7. Engineering Matrix: Synthesizes all data into a design requirement matrix for the project.
+    Why: This structure moves linearly from basic science -> disease state -> engineering constraints -> practical design, perfectly mirroring a biomedical engineering design process. 
+-->
+<!-- Visualization & Content Choices: 
+    1. HTML Flow Diagram (Goal: Organize): Shows lymphatic pathway without SVG. Uses CSS flexbox and Unicode arrows.
+    2. Line Chart (Goal: Relationships): Chart.js showing Inverse relationship between CVP and Lymph Flow (crucial for CHF context).
+    3. Bar Chart (Goal: Compare): Chart.js showing Viscosity comparisons (Water vs Lymph vs Blood vs Chyle) for catheter design (Poiseuille's law context).
+    4. Interactive Tabs (Goal: Organize): Condenses current treatments into digestible chunks without cluttering the page.
+    5. Engineering Matrix (Goal: Inform/Apply): A structured table/grid applying the physiological data directly to the user's project parameters.
+    Confirming: NO SVG, NO Mermaid used. 
+-->
+<!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+
+<!-- Navigation -->
+<nav class="fixed top-0 w-full bg-white shadow-sm z-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex justify-between h-16">
+            <div class="flex items-center">
+                <span class="text-2xl mr-2">🩸</span>
+                <span class="font-bold text-xl text-teal-800">Project LymphaPort</span>
+            </div>
+            <div class="hidden md:flex space-x-2 items-center text-sm font-medium text-slate-600">
+                <a href="#executive" class="nav-link px-3 py-2">Project Synthesis</a>
+                <a href="#thoracic-duct" class="nav-link px-3 py-2">Thoracic Duct</a>
+                <a href="#chf-connection" class="nav-link px-3 py-2">CHF Dynamics</a>
+                <a href="#viscosity" class="nav-link px-3 py-2">Viscosity</a>
+                <a href="#treatments" class="nav-link px-3 py-2">Current Treatments</a>
+            </div>
+        </div>
+    </div>
+</nav>
+
+<!-- Main Content -->
+<main class="pt-20 pb-16">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
+
+        <!-- Executive Summary / Project Front & Center -->
+        <section id="executive" class="mt-8">
+            <div class="bg-gradient-to-br from-teal-800 to-cyan-900 rounded-2xl shadow-xl p-8 text-white">
+                <h1 class="text-3xl font-bold mb-4">Lymphatic Port-a-Cath Project: Master Synthesis</h1>
+                <p class="text-teal-100 text-lg mb-6 max-w-3xl">
+                    This dashboard synthesizes all critical physiological, pathophysiological, and hemodynamic data required to design a functional lymphatic port-a-cath. Designing access to the lymphatic system—specifically the Thoracic Duct—presents unique engineering challenges distinct from venous access, primarily due to low pressures, high compliance, variable fluid viscosity (chyle), and the profound impact of Congestive Heart Failure (CHF).
+                </p>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-8">
+                    <div class="bg-white/10 p-5 rounded-xl border border-white/20">
+                        <h3 class="font-semibold text-teal-200 text-lg mb-2">⚙️ The Challenge</h3>
+                        <p class="text-sm">The thoracic duct is thin-walled, operates at near-zero pressure, and flow is heavily dependent on respiration and venous back-pressure. Catheterization risks thrombosis and vessel rupture.</p>
+                    </div>
+                    <div class="bg-white/10 p-5 rounded-xl border border-white/20">
+                        <h3 class="font-semibold text-teal-200 text-lg mb-2">🫀 The CHF Bottleneck</h3>
+                        <p class="text-sm">In right-sided heart failure, elevated Central Venous Pressure (CVP) acts as a physical dam, preventing thoracic duct drainage, leading to systemic lymphostasis and edema.</p>
+                    </div>
+                    <div class="bg-white/10 p-5 rounded-xl border border-white/20">
+                        <h3 class="font-semibold text-teal-200 text-lg mb-2">🎯 Project Goal</h3>
+                        <p class="text-sm">Design a port-a-cath that maintains patency in low-flow, variable-viscosity (chylous) environments, allowing for aspiration (decompression) or targeted therapeutic delivery.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- The Thoracic Duct Base Data -->
+        <section id="thoracic-duct" class="scroll-mt-24">
+            <h2 class="text-2xl font-bold text-slate-800 border-b-2 border-teal-200 pb-2 mb-6">1. The Thoracic Duct: Anatomy & Physiology</h2>
+            <p class="text-slate-600 mb-6 max-w-4xl">
+                Understanding the normal baseline of the thoracic duct is critical before analyzing disease states. It is the primary collecting duct of the lymphatic system, draining roughly 75% of the body's lymph (excluding the right arm and right side of the head/thorax, which are drained by the right lymphatic duct).
+            </p>
+            
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                <!-- Specs Card -->
+                <div class="glass-card rounded-xl p-6 shadow-sm">
+                    <h3 class="text-lg font-bold text-teal-800 mb-4">Baseline Specifications</h3>
+                    <ul class="space-y-3 text-sm">
+                        <li class="flex justify-between border-b border-slate-100 pb-2">
+                            <span class="font-medium text-slate-700">Length</span>
+                            <span class="text-teal-700 font-semibold">38 to 45 cm (Adult)</span>
+                        </li>
+                        <li class="flex justify-between border-b border-slate-100 pb-2">
+                            <span class="font-medium text-slate-700">Diameter</span>
+                            <span class="text-teal-700 font-semibold">2 to 5 mm (Highly distensible)</span>
+                        </li>
+                        <li class="flex justify-between border-b border-slate-100 pb-2">
+                            <span class="font-medium text-slate-700">Normal Flow Rate</span>
+                            <span class="text-teal-700 font-semibold">1 to 2 Liters / day (~1-2 mL/min)</span>
+                        </li>
+                        <li class="flex justify-between border-b border-slate-100 pb-2">
+                            <span class="font-medium text-slate-700">Peak Flow Rate (Post-prandial)</span>
+                            <span class="text-teal-700 font-semibold">Up to 4 Liters / day</span>
+                        </li>
+                        <li class="flex justify-between border-b border-slate-100 pb-2">
+                            <span class="font-medium text-slate-700">Intrinsic Pumping Pressure</span>
+                            <span class="text-teal-700 font-semibold">~10 to 25 mmHg (Lymphangion contraction)</span>
+                        </li>
+                        <li class="flex justify-between border-b border-slate-100 pb-2">
+                            <span class="font-medium text-slate-700">Termination Point</span>
+                            <span class="text-teal-700 font-semibold">Left Venous Angle (Jugulovenous junction)</span>
+                        </li>
+                        <li class="flex justify-between pb-2">
+                            <span class="font-medium text-slate-700">Valve Structure</span>
+                            <span class="text-teal-700 font-semibold">Bicuspid valves (prevents backflow)</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- HTML Diagram -->
+                <div class="glass-card rounded-xl p-6 shadow-sm bg-slate-50 flex flex-col justify-center">
+                    <h3 class="text-lg font-bold text-teal-800 mb-4 text-center">Lymphatic Drainage Pathway</h3>
+                    <div class="flex flex-col items-center space-y-2">
+                        <div class="w-full text-center p-2 bg-green-100 rounded text-green-800 text-sm font-medium border border-green-200">Interstitial Fluid (Capillaries)</div>
+                        <div class="text-slate-400">⬇️</div>
+                        <div class="w-full text-center p-2 bg-green-100 rounded text-green-800 text-sm font-medium border border-green-200">Afferent Lymphatic Vessels</div>
+                        <div class="text-slate-400">⬇️</div>
+                        <div class="w-full text-center p-2 bg-green-200 rounded text-green-900 text-sm font-medium border border-green-300">Lymph Nodes (Filtration)</div>
+                        <div class="text-slate-400">⬇️</div>
+                        <div class="w-full text-center p-2 bg-green-300 rounded text-green-900 text-sm font-medium border border-green-400 shadow-sm">Cisterna Chyli (Abdominal Base)</div>
+                        <div class="text-slate-400 font-bold text-lg">⬇️</div>
+                        <div class="w-full text-center p-3 bg-teal-500 rounded text-white font-bold shadow-md hover:scale-105 transition-transform cursor-help" title="Target site for Port-a-Cath">Thoracic Duct (Main Highway)</div>
+                        <div class="text-slate-400 font-bold text-lg">⬇️</div>
+                        <div class="w-full text-center p-2 bg-blue-100 rounded text-blue-800 text-sm font-medium border border-blue-200">Left Subclavian Vein (Systemic Circulation)</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- CHF Connection -->
+        <section id="chf-connection" class="scroll-mt-24">
+            <h2 class="text-2xl font-bold text-slate-800 border-b-2 border-teal-200 pb-2 mb-6">2. The CHF Connection: Hemodynamic Failure</h2>
+            <p class="text-slate-600 mb-6 max-w-4xl">
+                In Congestive Heart Failure (CHF), specifically right-sided or biventricular failure, the heart fails to pump blood forward efficiently. This causes blood to back up into the venous system, drastically raising Central Venous Pressure (CVP). Because the thoracic duct empties into this venous system, high CVP creates a "dam," preventing lymphatic drainage and causing severe fluid overload.
+            </p>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
+                <div class="chart-container">
+                    <canvas id="chfChart"></canvas>
+                </div>
+                <div class="space-y-4">
+                    <div class="bg-red-50 border-l-4 border-red-500 p-4 rounded-r-lg">
+                        <h4 class="font-bold text-red-800 mb-1">The Starling Principle Failure</h4>
+                        <p class="text-sm text-red-700">In CHF, increased venous pressure means increased capillary hydrostatic pressure. More fluid is pushed into the interstitium (edema). Simultaneously, the lymphatic system—which is supposed to clear this fluid—is blocked at the exit point by that exact same elevated venous pressure.</p>
+                    </div>
+                    <div class="bg-white p-4 rounded-lg shadow-sm border border-slate-100">
+                        <h4 class="font-bold text-slate-800 mb-2">Key Hemodynamic Thresholds</h4>
+                        <ul class="text-sm text-slate-600 space-y-2 list-disc pl-5">
+                            <li><strong>Normal CVP:</strong> 2-8 mmHg. Lymph flows freely.</li>
+                            <li><strong>Mild CHF (CVP 10-15 mmHg):</strong> Thoracic duct must work harder (pump stronger) to overcome the gradient.</li>
+                            <li><strong>Severe CHF (CVP > 15-20 mmHg):</strong> Venous pressure exceeds maximal lymphatic pumping pressure. Flow stagnates or stops completely (lymphostasis).</li>
+                        </ul>
+                    </div>
+                    <div class="bg-teal-50 border border-teal-200 p-4 rounded-lg">
+                        <h4 class="font-bold text-teal-800 mb-1">Port-a-Cath Implication</h4>
+                        <p class="text-sm text-teal-700">A lymphatic port-a-cath in a CHF patient could act as a "relief valve." By aspirating lymph from the duct before it reaches the venous bottleneck, we bypass the failing right heart, pulling fluid directly off the congested interstitium.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Viscosity and Rheology -->
+        <section id="viscosity" class="scroll-mt-24">
+            <h2 class="text-2xl font-bold text-slate-800 border-b-2 border-teal-200 pb-2 mb-6">3. Rheology: Viscosity & Catheter Dynamics</h2>
+            <p class="text-slate-600 mb-6 max-w-4xl">
+                Lymph is not water. Furthermore, thoracic duct lymph contains <strong>chyle</strong>—lymph from the intestines rich in digested dietary fats (chylomicrons). This makes thoracic duct fluid significantly more viscous and prone to clotting/fibrin deposition than peripheral lymph, directly impacting catheter patency and flow rates according to Poiseuille's Law.
+            </p>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                <div class="space-y-6">
+                    <div class="glass-card p-5 rounded-xl border border-slate-200">
+                        <h4 class="font-bold text-slate-800 mb-2">Poiseuille's Law Context</h4>
+                        <div class="bg-slate-100 p-3 rounded font-mono text-center mb-3">Q = (π · ΔP · r⁴) / (8 · η · L)</div>
+                        <p class="text-sm text-slate-600">
+                            <strong>Q</strong> = Flow rate. <strong>r</strong> = Catheter inner radius. <strong>η (eta)</strong> = Viscosity.<br><br>
+                            Because radius (r) is raised to the 4th power, a tiny reduction in lumen size (due to fibrin sheath) drastically reduces flow. Because Chyle viscosity (η) is higher than water, the required negative pressure (ΔP) to aspirate it via a port is significantly higher.
+                        </p>
+                    </div>
+                    
+                    <div class="bg-yellow-50 border border-yellow-200 p-4 rounded-xl">
+                        <h4 class="font-bold text-yellow-800 mb-2">The Chyle Challenge for Ports</h4>
+                        <ul class="text-sm text-yellow-700 space-y-2 list-disc pl-5">
+                            <li><strong>Fat Content:</strong> Chylomicrons can adhere to silicone/polyurethane catheter walls.</li>
+                            <li><strong>Fibrinogen:</strong> Lymph contains clotting factors. In stagnant flow (like a closed port), it *will* form fibrin sludges.</li>
+                            <li><strong>Milky consistency:</strong> Post-prandial (after eating) lymph is thick and milky. Catheter flushing protocols must account for lipid clearance, not just saline.</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="chart-container">
+                    <canvas id="viscosityChart"></canvas>
+                </div>
+            </div>
+        </section>
+
+        <!-- Current Treatments -->
+        <section id="treatments" class="scroll-mt-24">
+            <h2 class="text-2xl font-bold text-slate-800 border-b-2 border-teal-200 pb-2 mb-6">4. Current Treatment Landscape</h2>
+            <p class="text-slate-600 mb-6 max-w-4xl">
+                How is lymphatic congestion and CHF currently managed? Your port-a-cath project must offer advantages over these existing medical and surgical interventions. Click through the modalities to understand the current standard of care.
+            </p>
+
+            <div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
+                <div class="flex border-b border-slate-200 overflow-x-auto">
+                    <button class="tab-btn active px-6 py-4 text-sm font-medium focus:outline-none whitespace-nowrap" onclick="switchTab('diuretics', this)">Medical (Diuretics)</button>
+                    <button class="tab-btn px-6 py-4 text-sm font-medium focus:outline-none whitespace-nowrap" onclick="switchTab('paracentesis', this)">Paracentesis</button>
+                    <button class="tab-btn px-6 py-4 text-sm font-medium focus:outline-none whitespace-nowrap" onclick="switchTab('embolization', this)">TD Embolization</button>
+                    <button class="tab-btn px-6 py-4 text-sm font-medium focus:outline-none whitespace-nowrap" onclick="switchTab('decompression', this)">TD Decompression</button>
+                </div>
+                
+                <div class="p-6 h-64 overflow-y-auto">
+                    <!-- Tab Content 1 -->
+                    <div id="tab-diuretics" class="tab-content block">
+                        <h3 class="font-bold text-lg text-slate-800 mb-2">Diuretics (Lasix, etc.)</h3>
+                        <p class="text-slate-600 mb-4">The absolute first-line treatment for CHF and resulting edema. They work by forcing the kidneys to excrete sodium and water, reducing blood volume and venous pressure.</p>
+                        <strong class="text-sm text-slate-800">Limitations/Why a Port is needed:</strong>
+                        <p class="text-sm text-slate-600 mt-1">Diuretic resistance often occurs. In severe CHF, kidneys receive less blood flow and stop responding. Furthermore, diuretics do not physically clear the stagnant lymph proteins from the interstitium, leading to fibrotic tissue changes over time.</p>
+                    </div>
+                    
+                    <!-- Tab Content 2 -->
+                    <div id="tab-paracentesis" class="tab-content hidden">
+                        <h3 class="font-bold text-lg text-slate-800 mb-2">Paracentesis / Thoracentesis</h3>
+                        <p class="text-slate-600 mb-4">Direct needle aspiration of fluid from the abdominal cavity (ascites) or pleural space (pleural effusion) when lymph weeps into these cavities.</p>
+                        <strong class="text-sm text-slate-800">Limitations/Why a Port is needed:</strong>
+                        <p class="text-sm text-slate-600 mt-1">Highly invasive, requires repeated hospital visits. It treats the *symptom* (pooled fluid) after it has already leaked out of the lymphatic system, rather than treating the fluid directly in the plumbing (the thoracic duct).</p>
+                    </div>
+
+                    <!-- Tab Content 3 -->
+                    <div id="tab-embolization" class="tab-content hidden">
+                        <h3 class="font-bold text-lg text-slate-800 mb-2">Thoracic Duct Embolization (TDE)</h3>
+                        <p class="text-slate-600 mb-4">An interventional radiology procedure where the thoracic duct is intentionally blocked (coiled/glued) to treat severe chylous leaks (chylothorax).</p>
+                        <strong class="text-sm text-slate-800">Limitations/Why a Port is needed:</strong>
+                        <p class="text-sm text-slate-600 mt-1">This *stops* all central lymph flow. It is a destructive procedure used for trauma or specific leaks. It would be catastrophic for a CHF patient who already has fluid overload. A port offers *drainage*, not destruction.</p>
+                    </div>
+
+                    <!-- Tab Content 4 -->
+                    <div id="tab-decompression" class="tab-content hidden">
+                        <h3 class="font-bold text-lg text-slate-800 mb-2">Thoracic Duct Decompression / Shunting</h3>
+                        <p class="text-slate-600 mb-4">Experimental/novel surgical approaches. Connecting the thoracic duct to a lower-pressure vein (Lymphovenous bypass) or externally draining it.</p>
+                        <strong class="text-sm text-slate-800">The Port-a-Cath Opportunity:</strong>
+                        <p class="text-sm text-slate-600 mt-1">This is where your project lives. Current external drains are prone to infection and clotting. A subcutaneous Port-a-Cath accessing the thoracic duct would allow for intermittent, sterile, controlled decompression of the lymphatic system in refractory CHF patients without permanent open stomata.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Engineering Constraints Matrix -->
+        <section id="engineering-matrix" class="scroll-mt-24 mb-10">
+            <h2 class="text-2xl font-bold text-slate-800 border-b-2 border-teal-200 pb-2 mb-6">5. Project Design Requirements Matrix</h2>
+            <p class="text-slate-600 mb-6 max-w-4xl">
+                Synthesis of all clinical data into actionable biomedical engineering design constraints for the Lymphatic Port-a-Cath.
+            </p>
+            
+            <div class="overflow-x-auto shadow-sm rounded-lg border border-slate-200">
+                <table class="min-w-full bg-white text-left text-sm">
+                    <thead class="bg-slate-100 text-slate-700">
+                        <tr>
+                            <th class="py-3 px-4 font-semibold border-b border-slate-200">Constraint Domain</th>
+                            <th class="py-3 px-4 font-semibold border-b border-slate-200">Clinical Reality</th>
+                            <th class="py-3 px-4 font-semibold border-b border-slate-200">Port-a-Cath Design Implication</th>
+                        </tr>
+                    </thead>
+                    <tbody class="text-slate-600 divide-y divide-slate-100">
+                        <tr class="hover:bg-slate-50">
+                            <td class="py-3 px-4 font-medium text-slate-800">Vessel Anatomy</td>
+                            <td class="py-3 px-4">Thoracic duct is 2-5mm, highly distensible, thin-walled (lacks strong muscularis layer).</td>
+                            <td class="py-3 px-4">Catheter tip must be highly atraumatic, soft (silicone/polyurethane), to prevent vessel perforation. Fixation mechanisms must not occlude the fragile duct.</td>
+                        </tr>
+                        <tr class="hover:bg-slate-50">
+                            <td class="py-3 px-4 font-medium text-slate-800">Hemodynamics</td>
+                            <td class="py-3 px-4">Near-zero pressure system. Forward flow dependent on valves and breathing.</td>
+                            <td class="py-3 px-4">The port reservoir cannot rely on patient blood pressure to flush itself. High risk of backflow/stagnation. May require specialized anti-reflux valve in the catheter tip.</td>
+                        </tr>
+                        <tr class="hover:bg-slate-50">
+                            <td class="py-3 px-4 font-medium text-slate-800">Rheology (Fluid)</td>
+                            <td class="py-3 px-4">Presence of Chyle (high lipids, varying viscosity post-meals) and fibrinogen.</td>
+                            <td class="py-3 px-4">Inner lumen must be hydrophobic or heparin-coated to resist lipid/fibrin deposition. Standard heparin flushes used in venous ports may need lipid-solubilizing adjuncts.</td>
+                        </tr>
+                        <tr class="hover:bg-slate-50">
+                            <td class="py-3 px-4 font-medium text-slate-800">Aspiration Physics</td>
+                            <td class="py-3 px-4">If used for CHF relief, pulling thick fluid through a thin tube requires negative pressure.</td>
+                            <td class="py-3 px-4">Applying too much negative pressure via syringe at the port will collapse the thin thoracic duct walls over the catheter tip (suction lock). Catheter needs side-holes (skives).</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+    </div>
+</main>
+
+<script>
+    // --- Chart 1: CHF Connection (CVP vs Lymph Flow) ---
+    const ctxChf = document.getElementById('chfChart').getContext('2d');
+    const chfChart = new Chart(ctxChf, {
+        type: 'line',
+        data: {
+            labels: ['2', '5', '8', '12', '15', '20', '25'], // Central Venous Pressure (mmHg)
+            datasets: [{
+                label: 'Thoracic Duct Lymph Flow (%)',
+                data: [100, 95, 80, 50, 20, 5, 0], // Decreasing flow as CVP rises
+                borderColor: '#0d9488', // Teal 600
+                backgroundColor: 'rgba(13, 148, 136, 0.1)',
+                borderWidth: 3,
+                tension: 0.4,
+                fill: true,
+                pointBackgroundColor: '#0f766e',
+                pointRadius: 4
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                title: {
+                    display: true,
+                    text: 'Impact of Central Venous Pressure on Lymph Flow',
+                    font: { size: 16, family: 'Inter' }
+                },
+                tooltip: {
+                    callbacks: {
+                        label: function(context) {
+                            return `Flow: ${context.parsed.y}% of Normal`;
+                        }
+                    }
+                }
+            },
+            scales: {
+                x: {
+                    title: { display: true, text: 'Central Venous Pressure (mmHg) -> Worsening CHF' }
+                },
+                y: {
+                    title: { display: true, text: 'Lymph Flow Rate (%)' },
+                    min: 0,
+                    max: 110
+                }
+            }
+        }
+    });
+
+    // --- Chart 2: Viscosity Comparison ---
+    const ctxVisc = document.getElementById('viscosityChart').getContext('2d');
+    const viscChart = new Chart(ctxVisc, {
+        type: 'bar',
+        data: {
+            labels: ['Water', 'Peripheral Lymph', 'Thoracic Duct Chyle', 'Whole Blood'],
+            datasets: [{
+                label: 'Approx. Viscosity (Centipoise - cP)',
+                data: [1.0, 1.5, 3.5, 4.5], // General physiological approximations for comparative purposes
+                backgroundColor: [
+                    'rgba(148, 163, 184, 0.6)', // Slate for water
+                    'rgba(167, 243, 208, 0.8)', // Light green for lymph
+                    'rgba(253, 224, 71, 0.8)',  // Yellow/milky for chyle
+                    'rgba(239, 68, 68, 0.8)'    // Red for blood
+                ],
+                borderColor: [
+                    'rgb(100, 116, 139)',
+                    'rgb(5, 150, 105)',
+                    'rgb(202, 138, 4)',
+                    'rgb(185, 28, 28)'
+                ],
+                borderWidth: 1,
+                borderRadius: 4
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                title: {
+                    display: true,
+                    text: 'Fluid Viscosity Implications for Catheter Flow',
+                    font: { size: 16, family: 'Inter' }
+                },
+                legend: { display: false }
+            },
+            scales: {
+                y: {
+                    title: { display: true, text: 'Viscosity (cP)' },
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+
+    // --- Interactive Tabs Logic ---
+    function switchTab(tabId, btnElement) {
+        // Hide all tabs
+        const contents = document.querySelectorAll('.tab-content');
+        contents.forEach(content => {
+            content.classList.remove('block');
+            content.classList.add('hidden');
+        });
+
+        // Remove active class from all buttons
+        const btns = document.querySelectorAll('.tab-btn');
+        btns.forEach(btn => {
+            btn.classList.remove('active');
+        });
+
+        // Show selected tab
+        document.getElementById('tab-' + tabId).classList.remove('hidden');
+        document.getElementById('tab-' + tabId).classList.add('block');
+        
+        // Add active class to clicked button
+        btnElement.classList.add('active');
+    }
+</script>
+
+</body>
+</html>
